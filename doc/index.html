@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Goosetrap</title>
+    <link rel="stylesheet" type="text/css" href="/img/styles.css">
+    <style>
+        /* Estilos para el modal */
+        .modal {
+            display: none; /* Ocultar el modal por defecto */
+            position: fixed; /* Fijo en la pantalla */
+            z-index: 1; /* Encima de otros elementos */
+            left: 0;
+            top: 0;
+            width: 100%; /* Ancho completo */
+            height: 100%; /* Alto completo */
+            overflow: auto; /* Agregar scroll si es necesario */
+            background-color: rgb(0,0,0); /* Color de fondo */
+            background-color: rgba(0,0,0,0.4); /* Fondo con opacidad */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% desde el top y centrado en el medio */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Ancho del modal */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Make your fate choose</h2>
+    <form id="captchaForm">
+        <div>
+            <label>
+                <input type="checkbox" name="images" value="pato1.jpg">
+                <img src="/img/pato1.jpg" alt="Pato 1">
+            </label>
+            <label>
+                <input type="checkbox" name="images" value="ganso1.jpg">
+                <img src="/img/ganso1.jpg" alt="Ganso 1">
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox" name="images" value="pato2.jpg">
+                <img src="/img/pato2.jpg" alt="Pato 2">
+            </label>
+            <label>
+                <input type="checkbox" name="images" value="ganso2.png">
+                <img src="/img/ganso2.png" alt="Ganso 2">
+            </label>
+        </div>
+        <button type="button" onclick="verifySelection()">Verificar</button>
+    </form>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p id="result"></p>
+        </div>
+    </div>
+
+    <script>
+        function verifySelection() {
+            const correctImages = ["pato1.jpg", "pato2.jpg"];
+            const selectedImages = Array.from(document.querySelectorAll('input[name="images"]:checked'))
+                .map(input => input.value);
+
+            const isValid = correctImages.every(img => selectedImages.includes(img)) &&
+                            selectedImages.every(img => correctImages.includes(img));
+
+            document.getElementById('result').textContent = isValid ?
+                "GOOD!you are not a goose." :
+                "GOOSE detected pray for mercy";
+
+            showModal();
+        }
+
+        function showModal() {
+            document.getElementById('myModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
+
+        // Cerrar el modal si el usuario hace clic fuera del modal
+        window.onclick = function(event) {
+            if (event.target === document.getElementById('myModal')) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
